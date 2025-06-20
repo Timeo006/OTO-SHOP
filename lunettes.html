@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunettes - OTO Shop</title>
+</head>
+<body>
+    <div class="entete">
+        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Ouvrir le menu" style="position:absolute;top:50%;right:24px;left:auto;transform:translateY(-50%);">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <button id="toggle-theme" aria-label="Changer le mode" style="position:absolute;top:50%;right:72px;transform:translateY(-50%);">
+            <span id="theme-icon">🌙</span>
+        </button>
+        <div class="entete-groupe" style="margin-right:80px;">
+            <img src="favicon.ico" alt="OTO Shop Logo" class="logo" style="cursor:pointer;" onclick="toggleMenu()">
+            <div class="entete-texte">
+                <center>
+                <h1> OTO <i>Shop</i></h1>
+                <h3>
+                  <span id="sunglasses-s" style="cursor:pointer;" onclick="window.open('gerad.html','_blank')">S</span>UNGLASSES & HATS
+                </h3>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="ax">
+        <h2>Lunettes</h2>
+        <p>Découvrez notre collection de lunettes de soleil tendance !</p>
+    </div>
+    <div class="produits">
+        <div class="carte-produit" onclick="window.location.href='produit.html'" style="cursor:pointer;">
+            <div style="font-size:64px;">🕶️</div>
+            <h4>Lunettes OTO</h4>
+            <div class="prix">60€</div>
+            <button>Voir le produit</button>
+        </div>
+        <!-- Ajoute d'autres produits ici -->
+    </div>
+    <div class="side-menu" id="sideMenu">
+        <nav class="side-nav">
+            <a href="index.html">Accueil</a>
+            <a href="lunettes.html" class="active">Lunettes</a>
+            <a href="chapeaux.html">Chapeaux</a>
+            <a href="accessoires.html">Accessoires</a>
+            <a href="abonnement.html">Abonnement</a>
+        </nav>
+    </div>
+    <script>
+    function toggleMenu() {
+        const menu = document.getElementById('sideMenu');
+        const entete = document.querySelector('.entete');
+        menu.classList.toggle('open');
+        if(menu.classList.contains('open')) {
+            entete.style.position = 'fixed';
+            entete.style.top = '0';
+            entete.style.bottom = '';
+            entete.style.left = '0';
+            entete.style.width = '';
+            entete.style.zIndex = '3000';
+            entete.style.background = '';
+            entete.style.boxShadow = '';
+            entete.style.paddingBottom = '';
+        } else {
+            entete.style.position = 'fixed';
+            entete.style.top = '0';
+            entete.style.bottom = '';
+            entete.style.left = '0';
+            entete.style.width = '';
+            entete.style.zIndex = '3000';
+            entete.style.background = '';
+            entete.style.boxShadow = '';
+            entete.style.paddingBottom = '';
+        }
+    }
+    // Mode jour/nuit
+    const themeBtn = document.getElementById('toggle-theme');
+    const themeIcon = document.getElementById('theme-icon');
+    function setTheme(night) {
+        if(night) {
+            document.body.classList.add('night');
+            themeIcon.textContent = '☀️';
+            localStorage.setItem('theme', 'night');
+        } else {
+            document.body.classList.remove('night');
+            themeIcon.textContent = '🌙';
+            localStorage.setItem('theme', 'day');
+        }
+    }
+    themeBtn.onclick = function() {
+        setTheme(!document.body.classList.contains('night'));
+    };
+    setTheme(localStorage.getItem('theme') === 'night');
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gérard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background: url('Gerard.png') top center/cover no-repeat fixed; min-height: 100vh;">
+    <div class="entete">
+        <button class="menu-toggle" onclick="window.history.back()" aria-label="Retour" style="position:absolute;top:50%;left:24px;transform:translateY(-50%);">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <button id="toggle-theme" aria-label="Changer le mode" style="position:absolute;top:50%;right:24px;transform:translateY(-50%);">
+            <span id="theme-icon">🌙</span>
+        </button>
+        <div class="entete-groupe">
+            <img src="favicon.ico" alt="OTO Shop Logo" class="logo">
+            <div class="entete-texte">
+                <h1>Page spéciale : Gérard</h1>
+                <h3>Bienvenue sur la page secrète !</h3>
+            </div>
+        </div>
+    </div>
+    <div class="ax">
+        <h2>Gérard</h2>
+        <p>Vous avez cliqué sur le premier S de SUNGLASSES ! 🎉</p>
+        <div id="chatbot-container" style="max-width:400px;margin:32px auto 0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);padding:24px;">
+            <div id="chat-messages" style="min-height:120px;max-height:220px;overflow-y:auto;margin-bottom:16px;"></div>
+            <form id="chat-form" style="display:flex;gap:8px;">
+                <input type="text" id="chat-input" placeholder="Écrivez un message..." style="flex:1;padding:8px 12px;border-radius:8px;border:1px solid #ccc;outline:none;">
+                <button type="submit" style="background:#0f4689;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;">Envoyer</button>
+            </form>
+        </div>
+    </div>
+    <script>
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+    function addMessage(text, from) {
+        const msg = document.createElement('div');
+        msg.style.margin = '8px 0';
+        msg.style.textAlign = from === 'user' ? 'right' : 'left';
+        msg.innerHTML = `<span style="display:inline-block;padding:8px 14px;border-radius:12px;background:${from==='user'?'#e0e7ff':'#f1f1f1'};color:#222;max-width:80%;">${text}</span>`;
+        chatMessages.appendChild(msg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    async function botReply(userText) {
+        addMessage('...', 'bot');
+        try {
+            const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer gX04nYzpODZoK67klxN9QPvhQy782cZQ'
+                },
+                body: JSON.stringify({
+                    model: 'mistral-tiny',
+                    messages: [
+                        { role: 'system', content: "Tu es Gérard, le chatbot d'OTO Shop. Réponds de façon sympathique et concise, en français." },
+                        { role: 'system', content: "Tu es Gérard, le chatbot d'OTO Shop. quand tu reponds tu racontes une histoire 'de ton passé' en rapport avec la question." },
+                        { role: 'user', content: userText }
+                    ]
+                })
+            });
+            const data = await response.json();
+            // Supprime le message '...'
+            chatMessages.lastChild.remove();
+            if(data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+                addMessage(data.choices[0].message.content, 'bot');
+            } else {
+                addMessage("Désolé, je n'ai pas compris. Essaie de reformuler !", 'bot');
+            }
+        } catch (e) {
+            chatMessages.lastChild.remove();
+            addMessage("Erreur de connexion à l'IA Mistral.", 'bot');
+        }
+    }
+    chatForm.onsubmit = function(e) {
+        e.preventDefault();
+        const userText = chatInput.value.trim();
+        if(!userText) return;
+        addMessage(userText, 'user');
+        botReply(userText);
+        chatInput.value = '';
+    };
+    // Message d'accueil
+    addMessage("Salut, je suis Gérard, le chatbot OTO Shop !", 'bot');
+
+    // Fonctions utilitaires cookies
+    function setCookie(name, value, minutes) {
+        const d = new Date();
+        d.setTime(d.getTime() + (minutes*60*1000));
+        document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+    }
+    function getCookie(name) {
+        const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return v ? v[2] : null;
+    }
+
+    // Mode jour/nuit avec cookie
+    const themeBtn = document.getElementById('toggle-theme');
+    const themeIcon = document.getElementById('theme-icon');
+    function setTheme(night) {
+        if(night) {
+            document.body.classList.add('night');
+            themeIcon.textContent = '☀️';
+            localStorage.setItem('theme', 'night');
+            setCookie('theme', 'night', 60); // 60 minutes
+        } else {
+            document.body.classList.remove('night');
+            themeIcon.textContent = '🌙';
+            localStorage.setItem('theme', 'day');
+            setCookie('theme', 'day', 60);
+        }
+    }
+    themeBtn.onclick = function() {
+        setTheme(!document.body.classList.contains('night'));
+    };
+    // Initialisation : priorité au cookie, sinon localStorage
+    const cookieTheme = getCookie('theme');
+    setTheme(cookieTheme ? cookieTheme === 'night' : localStorage.getItem('theme') === 'night');
+    </script>
+</body>
+</html>

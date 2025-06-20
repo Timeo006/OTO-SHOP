@@ -1,0 +1,508 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f4689 0%, #2a6cc7 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    transition: margin-left 0.3s cubic-bezier(.4,0,.2,1);
+    padding-top: 120px; /* espace pour l'entête en haut */
+    padding-bottom: 0;
+}
+
+.entete {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 3000 !important;
+    background: #0f4689;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    padding-bottom: 4px;
+    min-height: 64px;
+    height: 64px;
+}
+
+.entete-groupe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 64px;
+    margin-left: 32px;
+    margin-right: 80px;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    margin-right: 12px;
+}
+
+.entete-texte {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.entete-texte center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.entete-texte h1 {
+    color: #fff;
+    font-size: 2.2rem;
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+.entete-texte h3 {
+    color: #fff;
+    font-weight: 400;
+    margin: 0;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.nav {
+    display: flex;
+    gap: 24px;
+    margin: 24px 0 0 32px;
+}
+
+.nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.nav a:hover, .nav a.active {
+    background: rgba(255,255,255,0.15);
+}
+
+.ax {
+    max-width: 700px;
+    margin: 40px auto;
+    background: #f7f7f7;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 32px 24px;
+    text-align: center;
+}
+
+.ax h2 {
+    color: #0f4689;
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.ax p {
+    color: #222;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Style pour les cartes produits */
+.produits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+    margin: 48px auto 0 auto;
+    max-width: 1100px;
+}
+
+.carte-produit {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+    padding: 24px 18px 18px 18px;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.15s;
+}
+.carte-produit:hover {
+    transform: translateY(-6px) scale(1.03);
+}
+.carte-produit img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+.carte-produit h4 {
+    margin: 0 0 8px 0;
+    color: #0f4689;
+    font-size: 1.1rem;
+}
+.carte-produit .prix {
+    color: #2a6cc7;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.carte-produit button {
+    background: #0f4689;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.carte-produit button:hover {
+    background: #2a6cc7;
+}
+
+/* Menu latéral type drawer */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 0;
+    background: transparent;
+    overflow-x: hidden;
+    transition: width 0.3s cubic-bezier(.4,0,.2,1), opacity 0.2s, visibility 0.2s, background 0.2s;
+    z-index: 1300 !important;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+.side-menu.open {
+    width: 240px;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    background: rgba(15,70,137,0.98); /* Légère transparence uniquement sur le menu */
+}
+.side-menu .side-nav {
+    opacity: 0;
+    transition: opacity 0.2s 0s;
+}
+.side-menu.open .side-nav {
+    opacity: 1;
+    transition: opacity 0.2s 0.1s;
+}
+.menu-toggle {
+    position: absolute;
+    top: 50%;
+    left: 24px;
+    right: auto !important;
+    transform: translateY(-50%);
+    z-index: 1300;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+.menu-toggle .bar {
+    display: block;
+    width: 32px;
+    height: 4px;
+    margin: 4px 0;
+    background: #fff;
+    border-radius: 2px;
+    transition: 0.3s;
+}
+.menu-toggle:hover .bar {
+    background: #ffd700;
+}
+.side-nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+    padding-left: 32px;
+    gap: 32px;
+}
+.side-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+}
+.side-nav a:hover {
+    color: #ffd700;
+}
+.fond-bleu {
+    background: linear-gradient(180deg, #0a4a8f 0%, #2176c1 100%);
+    min-height: 100vh;
+    margin: 0;
+}
+.produit-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+.carte-produit-v2 {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px #0002;
+    padding: 32px 32px 24px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 340px;
+    width: 100%;
+}
+.img-produit {
+    width: 200px;
+    height: 140px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 18px;
+}
+.infos-produit h2 {
+    margin: 0 0 8px 0;
+    font-size: 1.5em;
+    color: #0a4a8f;
+}
+.prix-produit {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2176c1;
+    margin: 12px 0;
+}
+.desc-produit {
+    color: #333;
+    font-size: 1em;
+    margin-bottom: 18px;
+    text-align: center;
+}
+.ajouter-panier {
+    background: #0a4a8f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 24px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.ajouter-panier:hover {
+    background: #2176c1;
+}
+@media (max-width: 900px) {
+  .entete-groupe {
+    margin-left: 8px;
+    margin-right: 56px !important;
+    height: 56px;
+  }
+  .entete-texte h1 {
+    font-size: 1.3rem;
+  }
+  .entete-texte h3 {
+    font-size: 0.9rem;
+  }
+  .logo {
+    width: 44px;
+    height: 44px;
+  }
+  .menu-toggle {
+    width: 32px;
+    height: 32px;
+  }
+  .produits {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .carte-produit {
+    width: 90vw;
+    max-width: 340px;
+  }
+}
+
+@media (max-width: 600px) {
+  .entete {
+    padding-bottom: 4px;
+    min-height: 48px;
+    height: 48px;
+  }
+  .entete-groupe {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0;
+    margin-right: 40px !important;
+    height: 48px;
+    width: 100%;
+  }
+  .entete-texte {
+    align-items: center;
+    width: 100%;
+  }
+  .entete-texte center {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  .entete-texte h1 {
+    font-size: 1.1rem;
+  }
+  .entete-texte h3 {
+    font-size: 0.8rem;
+  }
+  .logo {
+    width: 34px;
+    height: 34px;
+  }
+  .menu-toggle {
+    width: 28px;
+    height: 28px;
+  }
+  .side-menu {
+    width: 80vw !important;
+    min-width: 180px;
+    max-width: 320px;
+  }
+  .side-nav a {
+    font-size: 1rem;
+    padding: 12px 0;
+  }
+  .produits {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .carte-produit {
+    width: 95vw;
+    max-width: 300px;
+  }
+  .ax {
+    padding: 0 8px;
+  }
+}
+
+body.night {
+    background: #181c24 !important;
+    color: #e2e2e2;
+}
+body.night .entete,
+body.night .side-menu {
+    background: #232a36 !important;
+    color: #e2e2e2;
+}
+body.night .ax {
+    background: #ffffff !important;
+    color: #e2e2e2;
+}
+body.night .carte-produit,
+body.night .carte-produit-v2 {
+    background: #222634 !important;
+    color: #e2e2e2;
+    box-shadow: 0 2px 12px #0008;
+}
+body.night .produits {
+    background: transparent !important;
+    color: #e2e2e2;
+}
+body.night .prix,
+body.night .prix-produit {
+    color: #ffd700;
+}
+body.night .ajouter-panier,
+body.night .side-nav a,
+body.night button {
+    background: #232a36 !important;
+    color: #fff !important;
+}
+body.night .ajouter-panier:hover {
+    background: #2176c1 !important;
+}
+body.night .ax,
+body.night .produits {
+    color: #e2e2e2;
+}
+body.night input,
+body.night textarea {
+    background: #232a36;
+    color: #e2e2e2;
+    border-color: #444;
+}
+body.night a{
+  background-color: #0008;
+}
+
+/* Scrollbar personnalisée pour tout le site */
+body, .side-menu, .produits, .ax, .carte-produit, .carte-produit-v2, .desc-produit, .side-nav, .fond-bleu {
+    scrollbar-width: thin;
+    scrollbar-color: #0f4689 #e2e2e2;
+}
+
+/* Pour Chrome, Edge, Safari */
+body::-webkit-scrollbar,
+.side-menu::-webkit-scrollbar,
+.produits::-webkit-scrollbar,
+.ax::-webkit-scrollbar,
+.carte-produit::-webkit-scrollbar,
+.carte-produit-v2::-webkit-scrollbar,
+.desc-produit::-webkit-scrollbar,
+.side-nav::-webkit-scrollbar,
+.fond-bleu::-webkit-scrollbar {
+    width: 8px;
+    background: #e2e2e2;
+}
+body::-webkit-scrollbar-thumb,
+.side-menu::-webkit-scrollbar-thumb,
+.produits::-webkit-scrollbar-thumb,
+.ax::-webkit-scrollbar-thumb,
+.carte-produit::-webkit-scrollbar-thumb,
+.carte-produit-v2::-webkit-scrollbar-thumb,
+.desc-produit::-webkit-scrollbar-thumb,
+.side-nav::-webkit-scrollbar-thumb,
+.fond-bleu::-webkit-scrollbar-thumb {
+    background: #0f4689;
+    border-radius: 8px;
+}
+
+/* Scrollbar mode nuit */
+body.night, body.night .side-menu, body.night .produits, body.night .ax, body.night .carte-produit, body.night .carte-produit-v2, body.night .desc-produit, body.night .side-nav, body.night .fond-bleu {
+    scrollbar-color: #ffd700 #232a36;
+}
+body.night::-webkit-scrollbar,
+body.night .side-menu::-webkit-scrollbar,
+body.night .produits::-webkit-scrollbar,
+body.night .ax::-webkit-scrollbar,
+body.night .carte-produit::-webkit-scrollbar,
+body.night .carte-produit-v2::-webkit-scrollbar,
+body.night .desc-produit::-webkit-scrollbar,
+body.night .side-nav::-webkit-scrollbar,
+body.night .fond-bleu::-webkit-scrollbar {
+    background: #232a36;
+}
+body.night::-webkit-scrollbar-thumb,
+body.night .side-menu::-webkit-scrollbar-thumb,
+body.night .produits::-webkit-scrollbar-thumb,
+body.night .ax::-webkit-scrollbar-thumb,
+body.night .carte-produit::-webkit-scrollbar-thumb,
+body.night .carte-produit-v2::-webkit-scrollbar-thumb,
+body.night .desc-produit::-webkit-scrollbar-thumb,
+body.night .side-nav::-webkit-scrollbar-thumb,
+body.night .fond-bleu::-webkit-scrollbar-thumb {
+    background: #ffd700;
+    border-radius: 8px;
+}
